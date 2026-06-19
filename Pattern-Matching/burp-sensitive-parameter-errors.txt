@@ -1,1 +1,22 @@
+# =========================================================================
+# TARGET 1: SENSITIVE PARAMETERS IN URLS & REQUESTS
+# Flags hidden administrative, debugging, or state parameters
+# =========================================================================
 
+# Matches common debug, admin, and environment flags (e.g., ?debug=true)
+(?i)(?:debug|admin|is_admin|env|environment|test|config|internal|cfg|secret|priv|root|superuser|dev|devel|staging)\s*=\s*([^&]+)
+
+# Matches backup or system parameter configurations
+(?i)(?:backup|source|src|file_path|download|load|read|view|include|path|dir|folder)\s*=\s*([^&]+)
+
+
+# =========================================================================
+# TARGET 2: BACKEND ERROR MESSAGES (INFORMATION DISCLOSURE)
+# Triggers on detailed runtime stack traces leaking variables
+# =========================================================================
+
+# Django / Python Framework Stack Trace Leak Identification
+(?i)(Traceback \(most recent call last\):|NameError:|TypeError:|ValueError:|KeyError:|AttributeError:)
+
+# Database Exposure Signatures (MySQL, PostgreSQL, Oracle SQL Errors)
+(?i)(SQL syntax|You have an error in your SQL syntax|Warning: mysql_|PostgreSQL query failed:|invalid input syntax for type|ORA-[0-9]{5})
